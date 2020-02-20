@@ -317,6 +317,18 @@ module.exports = function(webpackEnv) {
       ],
     },
     module: {
+      rules: [
+        {
+          test: /\.css$/,
+          use: [
+            'style-loader',
+            'css-loader'
+          ]
+        }
+      ]
+    },
+  
+    module: {
       strictExportPresence: true,
       rules: [
         // Disable require.ensure as it's not a standard language feature.
