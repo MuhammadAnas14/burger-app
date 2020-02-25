@@ -1,6 +1,7 @@
 import React from 'react';
-import Layout from './components/Layout/layout'
+import Layout from './hoc/Layout/layout'
 import BurgerBuilder from './containers/BurgerBuilder/BugerBuilder'
+import Checkout from './containers/Checkout/Checkout'
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
         <BurgerBuilder>
           
         </BurgerBuilder>
-
+        <Checkout />
       </Layout>
     </div>
   );

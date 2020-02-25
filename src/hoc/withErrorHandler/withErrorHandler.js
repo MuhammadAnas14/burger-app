@@ -1,6 +1,6 @@
 import React , {Component} from 'react'
-import Model from '../components/UI/Modal/Modal'
-import Aux from './Aux'
+import Model from '../../components/UI/Modal/Modal'
+import Aux from '../Aux/Aux'
 import { render } from '@testing-library/react'
    
 
