@@ -1,80 +1,68 @@
-import React ,{Component} from 'react'
-import Button from '../../../components/UI/Button/Button'
+import React, { Component } from 'react';
+
+import Button from '../../../components/UI/Button/Button';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import '../../../css/ContactData.css'
-import axios from '../../../axios-order'
-import Spinner from '../../../components/UI/Spinner/Spinner'
+import axios from '../../../axios-order';
 
-class ContactData extends Component{
-
+class ContactData extends Component {
     state = {
-        name : '',
+        name: '',
         email: '',
-        address :{
-            street : '',
+        address: {
+            street: '',
             postalCode: ''
         },
-        loading:false
-
+        loading: false
     }
 
-    orderHandler(event) {
+    orderHandler = ( event ) => {
         // event.preventDefault();
-        this.setState({loading:true})
-
-        const order ={
+        this.setState( { loading: true } );
+        const order = {
             ingredients: this.props.ingredients,
-            price :this.props.totalPrice,
-            customer : {
-                name : 'Muhammad Anas',
+            price: this.props.price,
+            customer: {
+                name: 'Max Schwarzmüller',
                 address: {
-                    street: "gulshan",
-                    zipCode : '173500',
-                    country: 'Pakistan'
+                    street: 'Teststreet 1',
+                    zipCode: '41351',
+                    country: 'Germany'
+                },
+                email: 'test@test.com'
             },
-            email:"anasm9877@gmail.com"
-        },
-        deliveryMethod : 'fastest'
+            deliveryMethod: 'fastest'
+        }
+        axios.post( '/orders.json', order )
+            .then( response => {
+                this.setState( { loading: false } );
+                this.props.history.push('/');
+            } )
+            .catch( error => {
+                this.setState( { loading: false } );
+            } );
     }
 
-        axios.post('/orders.json',order)
-        .then(response => {
-            this.setState({loading:false})
-            this.props.history.push('/')
-        })
-        .catch(error => {
-            this.setState({loading:false})
-            console.log(error)
-        })
-
-        
-
-    }
-
-    render(){
+    render () {
         let form = (
             <form>
-                    <input type ='text' name = "name" placeholder ="Your name" />
-                    <input type ='email' name = "email" placeholder ="Your Email" />
-                    <input type ='text' name = "street" placeholder ="Street" />
-                    <input type ='text' name = "postal code" placeholder ="Postal Code" />
-                    <Button btnType = 'Success'
-                    clicked = {this.orderHandler}>ORDER</Button>
-                    
-                </form>
+                <input type="text" name="name" placeholder="Your Name" />
+                <input type="email" name="email" placeholder="Your Mail" />
+                <input type="text" name="street" placeholder="Street" />
+                <input type="text" name="postal" placeholder="Postal Code" />
+                <Button clicked={this.orderHandler}>ORDER</Button>
+            </form>
         );
-
-        if (this.state.loading){
-
-            form = <Spinner />
+        if ( this.state.loading ) {
+            form = <Spinner />;
         }
-
-        return(
-            <div className = 'ContactData'>
+        return (
+            <div className='ContactData'>
                 <h4>Enter your Contact Data</h4>
                 {form}
             </div>
-        )
+        );
     }
 }
 
-export default ContactData
+export default ContactData;
