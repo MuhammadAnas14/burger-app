@@ -4,22 +4,19 @@ import Button from '../../UI/Button/Button'
 import '../../../css/CheckoutSummary.css'
 
 const checkoutSummary = (props) => {
-
-    return(
-        <div className = 'CheckoutSummary'>
-            <h1>We hope t taste well</h1>
-            <div style = {{width : '300px', height:'300px ', margin:'auto'}}>
-                <Burger ingredients={props.ingredients} />
+    return (
+        <div className='CheckoutSummary'>
+            <h1>We hope it tastes well!</h1>
+            <div style={{width: '100%', margin: 'auto'}}>
+                <Burger ingredients={props.ingredients}/>
             </div>
-        
-        <Button btnTypes = "Dnager"
-        clicked = {props.checkoutCancelled}
-        >CANCEL</Button>
-        <Button btnTypes = "sucees"
-        clicked = {props.checkoutContinued}
-        >CONTINUE</Button>
+            <Button 
+                btnType="Danger"
+                clicked={props.checkoutCancelled}>CANCEL</Button>
+            <Button 
+                btnType="Success"
+                clicked={props.checkoutContinued}>CONTINUE</Button>
         </div>
-    )
+    );
 }
-
 export default checkoutSummary
