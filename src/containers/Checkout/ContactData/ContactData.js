@@ -9,6 +9,7 @@ import Input from '../../../components/UI/Input/Input'
 class ContactData extends Component {
     state = {
         orderForm: {
+
             name: {
                 elementType: 'input',
                 elementConfig: {
@@ -19,8 +20,10 @@ class ContactData extends Component {
                 validation: {
                     required : true
                 },
-                valid : false
+                valid : false,
+                touched :false
             },
+
             street: {
                 elementType: 'input',
                 elementConfig: {
@@ -31,8 +34,10 @@ class ContactData extends Component {
                 validation: {
                     required : true
                 },
-                valid : false
+                valid : false,
+                touched :false
             },
+            
             zipCode: {
                 elementType: 'input',
                 elementConfig: {
@@ -45,8 +50,10 @@ class ContactData extends Component {
                     minlength :5,
                     maxlength: 5
                 },
-                valid : false
+                valid : false,
+                touched :false
             },
+
             country: {
                 elementType: 'input',
                 elementConfig: {
@@ -57,8 +64,10 @@ class ContactData extends Component {
                 validation: {
                     required : true
                 },
-                valid : false
+                valid : false,
+                touched :false
             },
+
             email: {
                 elementType: 'input',
                 elementConfig: {
@@ -69,8 +78,10 @@ class ContactData extends Component {
                 validation: {
                     required : true
                 },
-                valid : false
+                valid : false,
+                touched :false
             },
+
             deliveryMethod: {
                 elementType: 'select',
                 elementConfig: {
@@ -79,9 +90,12 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: ''
+                value: 'fastest',
+                validation:{},
+                valid :true
             }
         },
+        formIsValid:true,
         loading: false
     }
 
@@ -143,10 +157,16 @@ class ContactData extends Component {
         
         updatedFormElement.value = event.target.value;
         updatedFormElement.valid = this.checkValidaty(updatedFormElement.value,updatedFormElement.validation)
+        updatedFormElement.touched = true;
         updatedOrderform[inputIdentifier] = updatedFormElement
-        console.log(updatedFormElement)
-        this.setState({orderForm : updatedOrderform})
+        
+        let formIsValid = true;
+        for (let inputIdentifier in updatedOrderform) {
+            formIsValid = updatedOrderform[inputIdentifier].valid && formIsValid;
+        }
+        this.setState({orderForm: updatedOrderform, formIsValid: formIsValid});
     }
+
 
     render () {
 
@@ -170,6 +190,7 @@ class ContactData extends Component {
                     value = {forElement.config.value}
                     changed = {(event) => this.inputChangeHandler(event,forElement.id)}
                     invalid = {!forElement.config.valid}
+                    touched = {forElement.config.touched}
                     shouldValidate = {forElement.config.validation } />
                 ))}
 
@@ -178,7 +199,8 @@ class ContactData extends Component {
                 <Input inputtype = "input" type="email" name="email" placeholder="Your Mail" />
                 <Input inputtype = "input" type="text" name="street" placeholder="Street" />
                 <Input inputtype = "input" type="text" name="postal" placeholder="Postal Code" /> */}
-                <Button>ORDER</Button>
+                <Button
+                disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
         );
         
