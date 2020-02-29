@@ -5,19 +5,55 @@ const input  = (props) => {
 
     let inputElement = null;
 
-    switch(props.inputElement){
-        case ('input'):
-            inputElement =<input className ='InputElement' {...props} />
-            break
+    const inputClasses = ['InputElement']
 
-        case ('textarea'):
-            inputElement =<textarea className ='InputElement' {...props} />
-            break
+    if (props.invalid && props.shouldValidate){
+        inputClasses.push('Invalid')
+    } 
+
+    switch ( props.elementType ) {
+        case ( 'input' ):
+            inputElement = <input
+                className={inputClasses.join(' ')}
+                {...props.elementConfig}
+                value={props.value}
+                onChange={props.changed} />;
+
+                break;
+
+        case ( 'textarea' ):
+            inputElement = <textarea
+                className={inputClasses.join(' ')}
+                {...props.elementConfig}
+                value={props.value}
+                onChange={props.changed} />;
+
+                break;
+
+        case ( 'select' ):
+            inputElement = (
+                <select
+                className={inputClasses.join(' ')}
+                    value={props.value}
+                    onChange={props.changed}>
+                    {props.elementConfig.options.map(option => (
+                        <option key={option.value} value={option.value}>
+                            {option.displayValue}
+                        </option>
+                    ))}
+
+                </select>
+            );
+
+            break;
+
         default:
-            inputElement =<input className ='InputElement' {...props} />
-            break
-        }
-
+            inputElement = <input
+            className={inputClasses.join(' ')}
+                {...props.elementConfig}
+                value={props.value}
+                onChange={props.changed} />;
+    }
     return(
 
     
