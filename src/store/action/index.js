@@ -5,4 +5,7 @@ export {
 
 } from './bugerBuilder'
 
-export {purchaseBurger} from './order'
+export {
+    purchaseBurger,
+    purchaseInit
+} from './order'
