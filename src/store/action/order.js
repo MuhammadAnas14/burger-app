@@ -79,12 +79,14 @@ export const fetchOrders = () => {
         axios.get( '/orders.json' )
             .then( res => {
                 const fetchedOrders = [];
+                console.log (res.data)
                 for ( let key in res.data ) {
                     fetchedOrders.push( {
                         ...res.data[key],
                         id: key
                     } );
                 }
+                console.log(fetchedOrders)
                 dispatch(fetchOrdersSuccess(fetchedOrders));
             })
             .catch(err => {
