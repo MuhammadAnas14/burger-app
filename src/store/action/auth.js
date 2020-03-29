@@ -13,7 +13,7 @@ export const authSuccess = (token , userId) => {
   return{
 
     type:actionTypes.AUTH_SUCCESS,
-    idToken :token ,
+    idToken :token,
     userId :userId
   };
 
@@ -24,6 +24,22 @@ export const authFail = (error) =>{
   return {
     type:actionTypes.AUTH_FAIL,
     error:error
+  }
+}
+
+export const logout = () =>{
+
+  return{
+    type:actionTypes.AUTH_LOGOUT
+  }
+}
+
+export const checkAuthTimeout = (expirationTime) => {
+  return dispatch =>{
+    setTimeout(()=> {
+      dispatch(logout());
+    },expirationTime * 1000)
+
   }
 }
 
@@ -38,7 +54,7 @@ export const auth = (email,password,isSingup) => {
     };
 
     let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB0jjLwFtTllnewf-tbV4rpBrSVNHxGR34';
-    if (isSingup){
+    if (!isSingup){
 
       url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB0jjLwFtTllnewf-tbV4rpBrSVNHxGR34'
     }
@@ -47,10 +63,11 @@ export const auth = (email,password,isSingup) => {
     .then(response => {
       console.log(response);
       dispatch(authSuccess(response.data.idToken ,response.data.localId))
+      dispatch(checkAuthTimeout(response.data.expiresIn))
     })
-    .catch(err => {
-      console.log(err);
-      dispatch(authFail())
+    .catch(error => {
+      // console.log(err);
+      dispatch(authFail(error.response.data.error))
 
     })
   } 
