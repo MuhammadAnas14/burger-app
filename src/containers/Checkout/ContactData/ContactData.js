@@ -8,6 +8,7 @@ import axios from '../../../axios-order';
 import Input from '../../../components/UI/Input/Input'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 import * as action from '../../../store/action/index'
+import {updateObject ,checkValidity} from '../../../shared/utility'
 class ContactData extends Component {
     state = {
         orderForm: {
@@ -116,6 +117,7 @@ class ContactData extends Component {
             orderData :formData,
             userId:this.props.userId
         }
+        console.log(order)
 
         this.props.onOrderBurger(order,this.props.token);
         // axios.post( '/orders.json', order )
@@ -161,18 +163,17 @@ class ContactData extends Component {
 
     inputChangeHandler = (event,inputIdentifier) => {
         console.log(event.target.value)
-        const updatedOrderform = {
-            ...this.state.orderForm
-        }
-        
-        const updatedFormElement= {
-            ...updatedOrderform[inputIdentifier]
-        }
-        
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value,updatedFormElement.validation)
-        updatedFormElement.touched = true;
-        updatedOrderform[inputIdentifier] = updatedFormElement
+      
+        const updatedFormElement= updateObject(this.state.orderForm[inputIdentifier],{
+          value:event.target.value,
+          valid:checkValidity(event.target.value,this.state.orderForm[inputIdentifier].validation),
+          touched:true
+        });
+
+        const updatedOrderform = updateObject(this.state.orderForm,{
+         [inputIdentifier]:updatedFormElement
+      })
+
         
         let formIsValid = true;
         for (let inputIdentifier in updatedOrderform) {
